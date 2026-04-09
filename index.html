@@ -2,91 +2,102 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panneau de Chantier - Gestion Firebase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Panneau de Chantier - Lean Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            padding: 30px 20px;
-            color: #0f172a;
+            background: linear-gradient(145deg, #eef2ff 0%, #d9e2ef 100%);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            padding: 32px 24px;
+            color: #0a2540;
+            min-height: 100vh;
         }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+
         .toolbar {
             max-width: 1400px;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 24px auto;
             display: flex;
-            gap: 12px;
+            gap: 16px;
             justify-content: space-between;
             flex-wrap: wrap;
             align-items: center;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(12px);
+            padding: 12px 28px;
+            border-radius: 80px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
-        .toolbar-left, .toolbar-right { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .toolbar-left, .toolbar-right { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
         .btn {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.3s;
             font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
-        .btn:hover { transform: translateY(-2px); }
-        .btn-primary { background: linear-gradient(135deg, #0f766e, #0d5c56); }
-        .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 22px -8px rgba(0,0,0,0.2); }
+        .btn-new { background: linear-gradient(135deg, #0f766e, #064e3b); color: white; }
+        .btn-save { background: linear-gradient(135deg, #f59e0b, #b45309); color: white; }
+        .btn-pdf { background: linear-gradient(135deg, #dc2626, #991b1b); color: white; }
+        .btn-secondary { background: linear-gradient(135deg, #475569, #334155); color: white; padding: 10px 20px; }
+        .btn-outline { background: white; color: #1e293b; border: 1px solid #cbd5e1; padding: 10px 20px; }
+        
         .code-display {
             background: white;
-            padding: 8px 16px;
-            border-radius: 40px;
+            padding: 8px 22px;
+            border-radius: 60px;
             font-family: monospace;
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
         .code-input-group {
             display: flex;
             gap: 8px;
             background: white;
-            padding: 5px 12px;
-            border-radius: 40px;
+            padding: 4px 10px 4px 20px;
+            border-radius: 60px;
             align-items: center;
         }
-        .code-input-group input {
-            border: none;
-            padding: 8px 12px;
-            font-family: monospace;
-            font-size: 1rem;
-            width: 150px;
-            outline: none;
-        }
+        .code-input-group input { border: none; padding: 8px 4px; font-family: monospace; width: 150px; outline: none; }
+        
         .worksheet {
             max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
-            padding: 30px 35px 40px 35px;
+            border-radius: 48px;
+            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.35);
+            overflow: hidden;
         }
+        .worksheet-inner { padding: 36px 40px 48px 40px; }
+        
         .header-main {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
             border-bottom: 2px solid #eef2ff;
         }
         .logo-area {
-            width: 100px;
-            height: 60px;
+            width: 120px;
+            height: 80px;
             background: #f8fafc;
-            border-radius: 16px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -94,136 +105,387 @@
             border: 2px dashed #cbd5e1;
             overflow: hidden;
         }
-        .logo-area img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .title-section h1 { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #0f3b5c, #1e6b5e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo-area img { width: 100%; height: 100%; object-fit: contain; }
+        .logo-placeholder { text-align: center; color: #94a3b8; font-size: 10px; }
+        .title-section h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0f3b5c, #1e6b5e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
         .info-panel {
-            background: linear-gradient(135deg, #fefce8, #fef9e3);
-            border-radius: 24px;
-            padding: 16px 24px;
-            margin-bottom: 24px;
+            background: linear-gradient(115deg, #fefce8, #fffbeb);
+            border-radius: 32px;
+            padding: 20px 28px;
+            margin-bottom: 28px;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 24px;
         }
         .info-item { flex: 1; min-width: 180px; }
-        .info-item label { font-weight: 700; color: #2c3e66; font-size: 0.7rem; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .info-item label { font-weight: 700; color: #b45309; font-size: 0.7rem; text-transform: uppercase; display: block; margin-bottom: 6px; }
         .info-item [contenteditable="true"] {
             background: white;
-            padding: 8px 12px;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 24px;
+            border: 1px solid #fde68a;
         }
-        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 25px 0; }
-        .card { background: white; border-radius: 20px; border: 1px solid #eef2ff; overflow: hidden; }
-        .card-header { background: #f8fafc; padding: 14px 20px; border-bottom: 2px solid #facc15; }
-        .card-header h3 { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .card-body { padding: 18px 20px; }
-        .info-line { display: flex; margin: 10px 0; gap: 8px; flex-wrap: wrap; }
-        .info-label { font-weight: 700; min-width: 100px; color: #475569; font-size: 0.85rem; }
-        .info-value { flex: 1; background: #fefce8; padding: 6px 10px; border-radius: 12px; border: 1px solid #f1f5f9; font-size: 0.85rem; }
-        .why-steps { background: #fefce8; border-radius: 16px; }
-        .step-why { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-bottom: 1px solid #eef2ff; }
-        .step-num { background: #facc15; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 40px; font-weight: 800; font-size: 0.75rem; }
-        .step-text { flex: 1; padding: 4px 0; }
-        .objectif-box { background: linear-gradient(135deg, #eef2ff, #e0e7ff); border-radius: 20px; padding: 18px 24px; margin: 20px 0; }
-        .table-works { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.8rem; }
-        .table-works th, .table-works td { border: 1px solid #e2e8f0; padding: 10px 8px; background: white; }
-        .table-works th { background: #f1f5f9; }
-        .validation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 15px; margin: 20px 0; }
-        .validation-card { background: white; border: 1px solid #eef2ff; border-radius: 16px; padding: 12px 16px; }
-        .sign-line { display: flex; justify-content: space-between; margin-top: 8px; padding-top: 6px; border-top: 1px solid #eef2ff; flex-wrap: wrap; gap: 5px; font-size: 0.75rem; }
-        .date-field { background: #f8fafc; padding: 4px 8px; border-radius: 40px; }
-        .before-after { display: flex; gap: 20px; margin: 15px 0; flex-wrap: wrap; }
-        .col-half { flex: 1; background: #f8fafc; border-radius: 20px; padding: 16px; }
-        [contenteditable="true"] { background-color: #fffef7; border-radius: 8px; transition: 0.1s; }
-        [contenteditable="true"]:focus { background-color: #fff8e0; outline: none; box-shadow: 0 0 0 2px #facc15; }
-        footer { margin-top: 25px; text-align: center; font-size: 0.7rem; color: #64748b; padding-top: 15px; border-top: 1px solid #eef2ff; }
-        @media (max-width: 780px) { .worksheet { padding: 15px; } .grid-2col { grid-template-columns: 1fr; } }
-        .toast { position: fixed; bottom: 30px; right: 30px; background: #1e293b; color: white; padding: 10px 20px; border-radius: 40px; z-index: 1000; font-size: 0.85rem; animation: fadeInOut 3s ease forwards; }
-        .toast.error { background: #dc2626; }
-        .toast.success { background: #10b981; }
-        @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(20px); } 10% { opacity: 1; transform: translateY(0); } 90% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-        .loading { opacity: 0.6; pointer-events: none; }
+        
+        .grid-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin: 28px 0; }
+        .card {
+            background: white;
+            border-radius: 28px;
+            border: 1px solid #eef2ff;
+            overflow: hidden;
+        }
+        .card-header {
+            background: #f8fafc;
+            padding: 16px 24px;
+            border-bottom: 3px solid #facc15;
+        }
+        .card-header h3 { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+        .card-body { padding: 22px 24px; }
+        
+        .info-line { display: flex; margin: 14px 0; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+        .info-label {
+            font-weight: 700;
+            min-width: 105px;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+        }
+        .info-value { flex: 1; background: #fefce8; padding: 8px 14px; border-radius: 20px; border: 1px solid #f1f5f9; }
+        
+        .step-why {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 16px;
+            border-bottom: 1px solid #eef2ff;
+        }
+        .step-num {
+            background: #facc15;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            font-weight: 800;
+        }
+        
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .method-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .method-item.selected {
+            background: #0f766e;
+            border-color: #0f766e;
+            color: white;
+        }
+        .method-item i { font-size: 1.5rem; margin-bottom: 5px; display: block; }
+        
+        .team-member-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .team-photo {
+            width: 60px;
+            height: 60px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .team-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .team-info { flex: 1; }
+        .team-info input {
+            width: 100%;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+        .remove-member { color: #dc2626; cursor: pointer; padding: 8px; }
+        .add-member-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .image-upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin: 15px 0;
+            background: #f8fafc;
+        }
+        .image-preview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 16px; }
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            margin-top: 10px;
+            font-family: inherit;
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .objectif-box {
+            background: linear-gradient(125deg, #eef2ff, #e0e7ff);
+            border-radius: 32px;
+            padding: 24px 32px;
+            margin: 28px 0;
+        }
+        
+        .table-works {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .table-works th, .table-works td {
+            border: 1px solid #e2e8f0;
+            padding: 14px 12px;
+            background: white;
+        }
+        .table-works th { background: #f1f5f9; font-weight: 700; }
+        
+        .validation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+        .validation-card {
+            background: white;
+            border: 1px solid #eef2ff;
+            border-radius: 24px;
+            padding: 18px 20px;
+        }
+        .sign-line {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #eef2ff;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .before-after { display: flex; gap: 28px; margin: 24px 0; flex-wrap: wrap; }
+        .col-half { flex: 1; background: #f8fafc; border-radius: 28px; padding: 24px; }
+        
+        [contenteditable="true"] {
+            background-color: #fffef7;
+            border-radius: 16px;
+            padding: 6px 12px;
+        }
+        [contenteditable="true"]:focus {
+            background-color: #fff8e0;
+            outline: none;
+            box-shadow: 0 0 0 3px #facc15;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e293b;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 60px;
+            z-index: 1000;
+            animation: fadeSlide 3s ease forwards;
+        }
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateX(40px); }
+            15% { opacity: 1; transform: translateX(0); }
+            85% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        @media (max-width: 780px) {
+            .worksheet-inner { padding: 20px; }
+            .grid-2col { grid-template-columns: 1fr; }
+            .methods-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #5b6e8c;
+            padding-top: 24px;
+            border-top: 1px solid #eef2ff;
+        }
     </style>
 </head>
 <body>
 
 <div class="toolbar">
     <div class="toolbar-left">
-        <div class="code-display">📋 Code: <span id="currentCode">---</span><button class="btn" id="copyCodeBtn" style="padding: 4px 12px; font-size: 0.7rem;">📋</button></div>
-        <div class="code-input-group"><input type="text" id="loadCodeInput" placeholder="Entrer code"><button class="btn" id="loadCodeBtn" style="padding: 6px 14px;">🔍 Charger</button></div>
+        <div class="code-display"><i class="fas fa-hashtag"></i> CODE: <span id="currentCode" style="font-weight:800;">---</span><button id="copyCodeBtn" class="btn-outline" style="padding: 4px 14px;"><i class="far fa-copy"></i></button></div>
+        <div class="code-input-group"><i class="fas fa-folder-open"></i><input type="text" id="loadCodeInput" placeholder="Code chantier"><button id="loadCodeBtn" class="btn-secondary" style="padding: 6px 16px;"><i class="fas fa-sync-alt"></i> Charger</button></div>
     </div>
     <div class="toolbar-right">
-        <button class="btn-primary" id="newChantierBtn">✨ NOUVEAU</button>
-        <button class="btn-success" id="saveChantierBtn">💾 ENREGISTRER</button>
-        <button class="btn" id="exportPdfBtn">📎 PDF</button>
+        <button id="newChantierBtn" class="btn btn-new"><i class="fas fa-plus-circle"></i> Nouveau chantier</button>
+        <button id="saveChantierBtn" class="btn btn-save"><i class="fas fa-save"></i> Enregistrer</button>
+        <button id="exportPdfBtn" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> Exporter PDF</button>
     </div>
 </div>
 
-<div class="worksheet" id="worksheetContainer">
-    <div class="header-main">
-        <div class="logo-area" id="logoUploader"><div class="logo-placeholder" id="logoPlaceholder">🏗️<div style="font-size: 8px;">Logo</div></div><img id="logoImg" style="display:none;" alt="Logo"></div>
-        <div class="title-section"><h1 id="mainTitle">📋 PANNAU CHANTIER</h1><p style="color:#64748b; font-size:0.75rem;">Amélioration Continue · Lean Management</p></div>
-        <div style="width: 80px;"></div>
-    </div>
-
-    <div class="info-panel">
-        <div class="info-item"><label>🏷️ Chantier (UAP/ligne)</label><div contenteditable="true" id="lieuChantier">Atelier Principal - Ligne A</div></div>
-        <div class="info-item"><label>👤 Pilote</label><div contenteditable="true" id="piloteNom">Jean Dupont</div></div>
-        <div class="info-item"><label>🏢 Sponsor</label><div contenteditable="true" id="sponsorNom">Marie Lambert</div></div>
-    </div>
-
-    <div class="grid-2col">
-        <div class="card"><div class="card-header"><h3>🔍 DÉFINIR LE PROBLÈME</h3></div><div class="card-body">
-            <div class="info-line"><span class="info-label">Quoi ?</span><span class="info-value" contenteditable="true" id="quoiVal">Défaut récurrent sur produit fini</span></div>
-            <div class="info-line"><span class="info-label">Qui ?</span><span class="info-value" contenteditable="true" id="quiVal">Contrôle qualité</span></div>
-            <div class="info-line"><span class="info-label">Où ?</span><span class="info-value" contenteditable="true" id="ouVal">Ligne d'assemblage</span></div>
-            <div class="info-line"><span class="info-label">Quand ?</span><span class="info-value" contenteditable="true" id="quandVal">15/03/2025</span></div>
-            <div class="info-line"><span class="info-label">Comment ?</span><span class="info-value" contenteditable="true" id="commentVal">Inspection visuelle</span></div>
-            <div class="info-line"><span class="info-label">Combien ?</span><span class="info-value" contenteditable="true" id="combienVal">12% non conformes</span></div>
-            <div class="info-line"><span class="info-label">Pourquoi ?</span><span class="info-value" contenteditable="true" id="pourquoiVal">Impact client et coûts</span></div>
-        </div></div>
-        <div class="card"><div class="card-header"><h3>⚙️ ANALYSE (5 POURQUOI)</h3></div><div class="card-body">
-            <div class="why-steps">
-                <div class="step-why"><span class="step-num">1</span><span class="step-text" contenteditable="true" id="why1">Manque de réglage machine</span></div>
-                <div class="step-why"><span class="step-num">2</span><span class="step-text" contenteditable="true" id="why2">Absence de standard</span></div>
-                <div class="step-why"><span class="step-num">3</span><span class="step-text" contenteditable="true" id="why3">Pas de formation</span></div>
-                <div class="step-why"><span class="step-num">4</span><span class="step-text" contenteditable="true" id="why4">Référentiel obsolète</span></div>
-                <div class="step-why"><span class="step-num">5</span><span class="step-text" contenteditable="true" id="why5">Processus absent</span></div>
+<div class="worksheet">
+    <div class="worksheet-inner" id="worksheetContainer">
+        <div class="header-main">
+            <div class="logo-area" id="logoUploader">
+                <div class="logo-placeholder" id="logoPlaceholder"><i class="fas fa-hard-hat"></i><div>Ajouter logo</div></div>
+                <img id="logoImg" style="display:none;" alt="Logo">
             </div>
-            <div style="margin-top: 15px; background:#fef3c7; padding: 10px; border-radius: 14px;"><span style="font-weight:700">🎯 Cause Racine :</span> <span contenteditable="true" id="rootCauseText">Manque de standard et formation</span></div>
-        </div></div>
+            <div class="title-section"><h1><i class="fas fa-clipboard-list"></i> PANNAU CHANTIER</h1><p>Lean Management · Résolution de problèmes</p></div>
+            <div style="width: 80px;"></div>
+        </div>
+
+        <div class="info-panel">
+            <div class="info-item"><label><i class="fas fa-map-marker-alt"></i> Chantier / Ligne</label><div contenteditable="true" id="lieuChantier">Atelier Excellence - Ligne Assemblage A</div></div>
+            <div class="info-item"><label><i class="fas fa-user-check"></i> Pilote</label><div contenteditable="true" id="piloteNom">Jean Dupont</div></div>
+            <div class="info-item"><label><i class="fas fa-chart-line"></i> Sponsor</label><div contenteditable="true" id="sponsorNom">Marie Lambert</div></div>
+        </div>
+
+        <div class="grid-2col">
+            <div class="card"><div class="card-header"><h3><i class="fas fa-question-circle"></i> DÉFINIR LE PROBLÈME</h3></div><div class="card-body">
+                <div class="info-line"><span class="info-label">Quoi ?</span><span class="info-value" contenteditable="true" id="quoiVal">Défaut récurrent sur finition produit</span></div>
+                <div class="info-line"><span class="info-label">Qui ?</span><span class="info-value" contenteditable="true" id="quiVal">Opérateurs / Contrôle qualité</span></div>
+                <div class="info-line"><span class="info-label">Où ?</span><span class="info-value" contenteditable="true" id="ouVal">Ligne Assemblage final</span></div>
+                <div class="info-line"><span class="info-label">Quand ?</span><span class="info-value" contenteditable="true" id="quandVal">Depuis 15/03/2025</span></div>
+                <div class="info-line"><span class="info-label">Comment ?</span><span class="info-value" contenteditable="true" id="commentVal">Contrôle visuel / audit</span></div>
+                <div class="info-line"><span class="info-label">Combien ?</span><span class="info-value" contenteditable="true" id="combienVal">12% pièces défectueuses</span></div>
+                <div class="info-line"><span class="info-label">Pourquoi ?</span><span class="info-value" contenteditable="true" id="pourquoiVal">Impact satisfaction client & coûts rebut</span></div>
+            </div></div>
+            <div class="card"><div class="card-header"><h3><i class="fas fa-brain"></i> 5 POURQUOI (Analyse)</h3></div><div class="card-body">
+                <div class="step-why"><span class="step-num">1</span><span class="step-text" contenteditable="true" id="why1">Réglage machine instable</span></div>
+                <div class="step-why"><span class="step-num">2</span><span class="step-text" contenteditable="true" id="why2">Absence de procédure standard</span></div>
+                <div class="step-why"><span class="step-num">3</span><span class="step-text" contenteditable="true" id="why3">Formation opérateur incomplète</span></div>
+                <div class="step-why"><span class="step-num">4</span><span class="step-text" contenteditable="true" id="why4">Documentation non mise à jour</span></div>
+                <div class="step-why"><span class="step-num">5</span><span class="step-text" contenteditable="true" id="why5">Absence d'audit régulier</span></div>
+                <div style="margin-top: 20px; background:#fef3c7; padding: 14px; border-radius: 20px;"><span style="font-weight:800;">🎯 Cause Racine :</span> <span contenteditable="true" id="rootCauseText">Manque de standardisation et formation continue</span></div>
+            </div></div>
+        </div>
+
+        <div class="objectif-box"><div style="font-weight:800; font-size:1.2rem;"><i class="fas fa-bullseye"></i> Objectif SMART</div><div contenteditable="true" id="smartObj" style="margin: 12px 0;">Réduire le taux de défaut de 12% → 3% d'ici Juin 2025</div><div><span style="font-weight:700;">💰 Gains prévus :</span> <span contenteditable="true" id="gainsValue">32 500</span> €</div></div>
+
+        <div style="display: flex; gap: 28px; margin: 28px 0; flex-wrap: wrap;">
+            <div style="flex:1; background:#f8fafc; border-radius: 28px; padding: 20px;">
+                <h3><i class="fas fa-users"></i> Équipe projet</h3>
+                <div id="teamContainer"></div>
+                <button class="add-member-btn" id="addMemberBtn"><i class="fas fa-plus"></i> Ajouter un membre</button>
+            </div>
+            <div style="flex:2; background:#f8fafc; border-radius: 28px; padding: 20px;">
+                <h3><i class="fas fa-tools"></i> Méthodes Lean</h3>
+                <div class="methods-grid" id="methodsGrid">
+                    <div class="method-item" data-method="5S"><i class="fas fa-broom"></i><span>5S</span></div>
+                    <div class="method-item" data-method="TPM"><i class="fas fa-microchip"></i><span>TPM</span></div>
+                    <div class="method-item" data-method="KANBAN"><i class="fas fa-tasks"></i><span>KANBAN</span></div>
+                    <div class="method-item" data-method="VSM"><i class="fas fa-chart-line"></i><span>VSM</span></div>
+                    <div class="method-item" data-method="SMED"><i class="fas fa-stopwatch"></i><span>SMED</span></div>
+                    <div class="method-item" data-method="HOSHIN"><i class="fas fa-flag-checkered"></i><span>HOSHIN</span></div>
+                </div>
+                <div class="info-line" style="margin-top: 15px;">
+                    <span class="info-label">Autre méthode :</span>
+                    <input type="text" id="otherMethod" placeholder="Entrez une autre méthode..." style="flex:1; padding: 8px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">
+                </div>
+                <div class="info-line"><span class="info-label">Plan d'action :</span><span class="info-value" contenteditable="true" id="actionPlan">Former, standardiser, audit quotidien</span></div>
+            </div>
+        </div>
+
+        <div style="margin: 24px 0 16px;"><div style="background:#0f3b5c; color:white; padding: 8px 24px; border-radius: 60px; display: inline-block;"><i class="fas fa-play"></i> OUVERTURE DU CHANTIER</div></div>
+        <table class="table-works"><thead><tr><th>Validation</th><th>Date</th><th>Étapes principales</th><th>KPI / Suivi</th></tr></thead><tbody>
+            <tr><td style="font-weight:600;">Pilote</td><td contenteditable="true" id="datePilote">10/03/2025</td><td rowspan="5" contenteditable="true" id="mainSteps">Analyse causes, plan d'actions, déploiement 5S</td><td rowspan="5" contenteditable="true" id="kpiText">Taux défaut, TRS</td></tr>
+            <tr><td style="font-weight:600;">Resp UAP</td><td contenteditable="true" id="dateUap">12/03/2025</td></tr>
+            <tr><td style="font-weight:600;">Resp Qualité</td><td contenteditable="true" id="dateQualite">14/03/2025</td></tr>
+            <tr><td style="font-weight:600;">Resp Service</td><td contenteditable="true" id="dateService">15/03/2025</td></tr>
+            <tr><td style="font-weight:600;">Directeur Site</td><td contenteditable="true" id="dateDirecteur">20/03/2025</td></tr>
+        </tbody></table>
+
+        <hr style="margin: 32px 0 24px;">
+        <div><div style="background:#2c3e66; color:white; padding: 6px 24px; border-radius: 60px; display: inline-block;"><i class="fas fa-flag-checkered"></i> CLÔTURE · BILAN FINAL</div></div>
+        
+        <div class="before-after">
+            <div class="col-half">
+                <h4><i class="fas fa-chart-simple"></i> SITUATION AVANT</h4>
+                <div class="image-upload-area" id="avantUpload"><i class="fas fa-camera"></i> Cliquez pour ajouter une photo AVANT</div>
+                <input type="file" id="avantFile" accept="image/*" style="display:none">
+                <img id="avantImage" class="image-preview" style="display:none;">
+                <textarea class="comment-input" id="avantComment" placeholder="Commentaire sur la situation AVANT..."></textarea>
+            </div>
+            <div class="col-half">
+                <h4><i class="fas fa-chart-line"></i> SITUATION APRÈS</h4>
+                <div class="image-upload-area" id="apresUpload"><i class="fas fa-camera"></i> Cliquez pour ajouter une photo APRÈS</div>
+                <input type="file" id="apresFile" accept="image/*" style="display:none">
+                <img id="apresImage" class="image-preview" style="display:none;">
+                <textarea class="comment-input" id="apresComment" placeholder="Commentaire sur la situation APRÈS..."></textarea>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <h4><i class="fas fa-trophy"></i> RÉSULTATS ATTEINTS</h4>
+            <div class="info-line"><span class="info-label">Amélioration de :</span><span contenteditable="true" id="ameliorationDe">12% défauts</span></div>
+            <div class="info-line"><span class="info-label">à :</span><span contenteditable="true" id="ameliorationA">3% défauts</span></div>
+            <div class="info-line"><span class="info-label">en (date) :</span><span contenteditable="true" id="ameliorationDate">Juin 2025</span></div>
+            <div class="info-line"><span class="info-label">💰 Gain obtenu :</span><span contenteditable="true" id="gainObtenu">28 500</span> €</div>
+            <div style="margin-top: 15px; padding: 10px; background: #fef3c7; border-radius: 16px; font-size:0.8rem;">
+                <i class="fas fa-calculator"></i> (doit être validé par la finance)
+            </div>
+        </div>
+
+        <div class="validation-grid">
+            <div class="validation-card"><strong><i class="fas fa-user-tie"></i> Validation Pilote</strong><br>Nom: <span contenteditable="true" id="nomPiloteVal">Jean Dupont</span><div class="sign-line">Signature: <span contenteditable="true" id="signPilote">J.D.</span><span contenteditable="true" id="datePiloteCloture">05/06/2025</span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-industry"></i> Validation Resp UAP</strong><br>Nom: <span contenteditable="true" id="nomUapVal">Sophie Martin</span><div class="sign-line">Signature: <span contenteditable="true" id="signUap">S.M.</span><span contenteditable="true" id="dateUapCloture">05/06/2025</span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-check-double"></i> Validation Resp Qualité</strong><br>Nom: <span contenteditable="true" id="nomQualiteVal">Ahmed Benali</span><div class="sign-line">Signature: <span contenteditable="true" id="signQualite">A.B.</span><span contenteditable="true" id="dateQualiteCloture">06/06/2025</span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-truck-fast"></i> Validation Resp Service</strong><br>Nom: <span contenteditable="true" id="nomServiceVal">Clara Weber</span><div class="sign-line">Signature: <span contenteditable="true" id="signService">C.W.</span><span contenteditable="true" id="dateServiceCloture">07/06/2025</span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-building"></i> Validation Directeur Site</strong><br>Nom: <span contenteditable="true" id="nomDirecteurVal">Marc Lefevre</span><div class="sign-line">Signature: <span contenteditable="true" id="signDirecteur">M.L.</span><span contenteditable="true" id="dateDirecteurCloture">10/06/2025</span></div></div>
+        </div>
+
+        <div style="background:#f1f5f9; border-radius: 28px; padding: 18px 24px;"><span style="font-weight:800;"><i class="fas fa-paperclip"></i> Annexes & Standards :</span> <span contenteditable="true" id="annexesText">Procédure modifiée V2, plan formation 2025</span></div>
+        <footer><i class="fas fa-database"></i> Sauvegarde cloud Firebase · Code unique · Export PDF</footer>
     </div>
-
-    <div class="objectif-box"><div style="font-weight:800;">🎯 Objectif SMART</div><div contenteditable="true" id="smartObj" style="margin: 8px 0;">Réduire défaut de 12% à 3% en 3 mois</div><div><span style="font-weight:700;">📈 Gains :</span> <span contenteditable="true" id="gainsValue">25 000</span> €</div></div>
-
-    <div style="display: flex; gap: 20px; margin: 15px 0; flex-wrap: wrap;">
-        <div style="flex:1; background:#f8fafc; border-radius: 20px; padding: 15px;"><h3 style="font-size:1rem;">👥 Équipe</h3><div class="info-line"><span class="info-label">Membres :</span><span class="info-value" contenteditable="true" id="teamMembers">J. Dupont, M. Lambert</span></div><div class="info-line"><span class="info-label">Rôles :</span><span class="info-value" contenteditable="true" id="teamRoles">Pilote, Sponsor</span></div></div>
-        <div style="flex:2; background:#f8fafc; border-radius: 20px; padding: 15px;"><h3 style="font-size:1rem;">🛠️ Méthode</h3><div class="info-line"><span class="info-label">Méthodologie :</span><span class="info-value" contenteditable="true" id="methodValue">QQOQCCP / AMDEC / 5S</span></div><div class="info-line"><span class="info-label">Plan action :</span><span class="info-value" contenteditable="true" id="actionPlan">Former, standardiser, auditer</span></div></div>
-    </div>
-
-    <div style="margin: 15px 0;"><div style="background:#0f3b5c; color:white; padding: 6px 16px; border-radius: 40px; display: inline-block; font-size:0.8rem;">📌 OUVERTURE</div></div>
-    <table class="table-works"><thead><tr><th>Validation</th><th>Date</th><th>Étapes</th><th>KPI</th></tr></thead><tbody>
-        <tr><td>Validation Pilote</td><td contenteditable="true" id="datePilote">10/03/2025</td><td rowspan="5" contenteditable="true" id="mainSteps">Analyse, Actions, Suivi</td><td rowspan="5" contenteditable="true" id="kpiText">Taux défaut, TRS</td></tr>
-        <tr><td>Validation UAP</td><td contenteditable="true" id="dateUap">12/03/2025</td></tr>
-        <tr><td>Validation Qualité</td><td contenteditable="true" id="dateQualite">14/03/2025</td></tr>
-        <tr><td>Validation Service</td><td contenteditable="true" id="dateService">15/03/2025</td></tr>
-        <tr><td>Validation Directeur</td><td contenteditable="true" id="dateDirecteur">20/03/2025</td></tr>
-    </tbody></table>
-
-    <hr style="margin: 20px 0;"><div><div style="background:#2c3e66; color:white; padding: 6px 16px; border-radius: 40px; display: inline-block; font-size:0.8rem;">🏁 CLÔTURE</div></div>
-    <div class="before-after"><div class="col-half"><h4>📉 AVANT</h4><div contenteditable="true" id="avantText">Pareto 12% défauts, MUDAs identifiés</div></div><div class="col-half"><h4>📈 APRÈS</h4><div contenteditable="true" id="apresText">Tendance -70%, gains 22k€</div></div></div>
-
-    <div class="validation-grid">
-        <div class="validation-card"><strong>Validation Pilote</strong><br>Nom: <span contenteditable="true" id="nomPiloteVal">Jean Dupont</span><div class="sign-line">Signature: <span contenteditable="true" id="signPilote">J.D.</span> <span class="date-field" contenteditable="true" id="datePiloteCloture">05/06/2025</span></div></div>
-        <div class="validation-card"><strong>Validation UAP</strong><br>Nom: <span contenteditable="true" id="nomUapVal">Sophie Martin</span><div class="sign-line">Signature: <span contenteditable="true" id="signUap">S.M.</span> <span class="date-field" contenteditable="true" id="dateUapCloture">05/06/2025</span></div></div>
-        <div class="validation-card"><strong>Validation Qualité</strong><br>Nom: <span contenteditable="true" id="nomQualiteVal">Ahmed Benali</span><div class="sign-line">Signature: <span contenteditable="true" id="signQualite">A.B.</span> <span class="date-field" contenteditable="true" id="dateQualiteCloture">06/06/2025</span></div></div>
-        <div class="validation-card"><strong>Validation Service</strong><br>Nom: <span contenteditable="true" id="nomServiceVal">Clara Weber</span><div class="sign-line">Signature: <span contenteditable="true" id="signService">C.W.</span> <span class="date-field" contenteditable="true" id="dateServiceCloture">07/06/2025</span></div></div>
-        <div class="validation-card"><strong>Validation Directeur</strong><br>Nom: <span contenteditable="true" id="nomDirecteurVal">Marc Lefevre</span><div class="sign-line">Signature: <span contenteditable="true" id="signDirecteur">M.L.</span> <span class="date-field" contenteditable="true" id="dateDirecteurCloture">10/06/2025</span></div></div>
-    </div>
-
-    <div style="background:#f1f5f9; border-radius: 20px; padding: 12px 16px;"><span style="font-weight:700;">📎 Annexes :</span> <span contenteditable="true" id="annexesText">Procédure modifiée, plan formation</span></div>
-    <footer>Panneau Chantier · Firebase · Création, Sauvegarde, Chargement par code</footer>
 </div>
 
 <script type="module">
@@ -242,138 +504,225 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
-    const fieldIds = [
-        'lieuChantier', 'piloteNom', 'sponsorNom',
-        'quoiVal', 'quiVal', 'ouVal', 'quandVal', 'commentVal', 'combienVal', 'pourquoiVal',
-        'why1', 'why2', 'why3', 'why4', 'why5', 'rootCauseText',
-        'smartObj', 'gainsValue',
-        'teamMembers', 'teamRoles', 'methodValue', 'actionPlan',
-        'datePilote', 'dateUap', 'dateQualite', 'dateService', 'dateDirecteur',
-        'mainSteps', 'kpiText', 'avantText', 'apresText',
-        'nomPiloteVal', 'nomUapVal', 'nomQualiteVal', 'nomServiceVal', 'nomDirecteurVal',
-        'signPilote', 'signUap', 'signQualite', 'signService', 'signDirecteur',
-        'datePiloteCloture', 'dateUapCloture', 'dateQualiteCloture', 'dateServiceCloture', 'dateDirecteurCloture',
-        'annexesText'
-    ];
-    
     let currentCode = null;
+    let teamMembers = [{ name: "Jean Dupont", role: "Pilote", photo: null }];
+    let selectedMethods = [];
     
-    function showToast(message, type = 'info') {
+    function showToast(msg, type = 'info') {
         const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `${type === 'error' ? '❌' : '✅'} ${message}`;
+        toast.className = 'toast';
+        toast.style.background = type === 'error' ? '#dc2626' : '#1e293b';
+        toast.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${msg}`;
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
+        setTimeout(() => toast.remove(), 3200);
     }
     
-    function generateCode() {
-        return 'CH-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+    function generateCode() { return 'CH-' + Math.random().toString(36).substring(2, 10).toUpperCase(); }
+    
+    function renderTeam() {
+        const container = document.getElementById('teamContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        teamMembers.forEach((member, idx) => {
+            const div = document.createElement('div');
+            div.className = 'team-member-card';
+            div.innerHTML = `
+                <div class="team-photo" data-idx="${idx}">
+                    ${member.photo ? `<img src="${member.photo}">` : '<i class="fas fa-user"></i>'}
+                </div>
+                <div class="team-info">
+                    <input type="text" placeholder="Nom" value="${member.name.replace(/"/g, '&quot;')}" class="member-name" data-idx="${idx}">
+                    <input type="text" placeholder="Rôle" value="${member.role.replace(/"/g, '&quot;')}" class="member-role" data-idx="${idx}">
+                </div>
+                <div class="remove-member" data-idx="${idx}"><i class="fas fa-trash"></i></div>
+            `;
+            container.appendChild(div);
+        });
+        
+        document.querySelectorAll('.team-photo').forEach(el => {
+            el.addEventListener('click', (e) => {
+                const idx = parseInt(el.dataset.idx);
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if(file) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            teamMembers[idx].photo = ev.target.result;
+                            renderTeam();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+                input.click();
+            });
+        });
+        
+        document.querySelectorAll('.member-name').forEach(el => {
+            el.addEventListener('change', (e) => { teamMembers[parseInt(el.dataset.idx)].name = e.target.value; });
+        });
+        document.querySelectorAll('.member-role').forEach(el => {
+            el.addEventListener('change', (e) => { teamMembers[parseInt(el.dataset.idx)].role = e.target.value; });
+        });
+        document.querySelectorAll('.remove-member').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if(teamMembers.length > 1) {
+                    teamMembers.splice(parseInt(el.dataset.idx), 1);
+                    renderTeam();
+                } else showToast("Il faut au moins un membre", 'error');
+            });
+        });
     }
+    
+    document.getElementById('addMemberBtn')?.addEventListener('click', () => {
+        teamMembers.push({ name: "Nouveau membre", role: "À définir", photo: null });
+        renderTeam();
+    });
+    
+    // Méthodes Lean
+    document.querySelectorAll('.method-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const method = item.dataset.method;
+            if(item.classList.contains('selected')) {
+                item.classList.remove('selected');
+                selectedMethods = selectedMethods.filter(m => m !== method);
+            } else {
+                item.classList.add('selected');
+                selectedMethods.push(method);
+            }
+            const methodSpan = document.getElementById('methodValue');
+            if(methodSpan) methodSpan.innerText = selectedMethods.join(', ');
+        });
+    });
+    
+    // Upload images
+    function setupImageUpload(triggerId, fileId, imgId, commentId) {
+        const trigger = document.getElementById(triggerId);
+        const fileInput = document.getElementById(fileId);
+        if(trigger && fileInput) {
+            trigger.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        const img = document.getElementById(imgId);
+                        if(img) {
+                            img.src = ev.target.result;
+                            img.style.display = 'block';
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+    
+    setupImageUpload('avantUpload', 'avantFile', 'avantImage', 'avantComment');
+    setupImageUpload('apresUpload', 'apresFile', 'apresImage', 'apresComment');
+    
+    document.getElementById('otherMethod')?.addEventListener('change', (e) => {
+        if(e.target.value) {
+            const methodSpan = document.getElementById('methodValue');
+            const current = methodSpan?.innerText || '';
+            methodSpan.innerText = current ? current + ', ' + e.target.value : e.target.value;
+        }
+    });
     
     function collectData() {
-        const data = {};
-        for (const id of fieldIds) {
-            const el = document.getElementById(id);
-            if (el) data[id] = el.innerText || el.textContent || '';
-        }
-        const logoImg = document.getElementById('logoImg');
-        if (logoImg && logoImg.src && logoImg.style.display !== 'none') {
-            data.logoBase64 = logoImg.src;
-        }
-        data.lastModified = new Date().toISOString();
-        return data;
-    }
-    
-    function populateData(data) {
-        for (const id of fieldIds) {
-            const el = document.getElementById(id);
-            if (el && data[id] !== undefined && data[id] !== null) {
-                el.innerText = data[id];
-            }
-        }
-        if (data.logoBase64) {
-            const logoImg = document.getElementById('logoImg');
-            const logoPlaceholder = document.getElementById('logoPlaceholder');
-            logoImg.src = data.logoBase64;
-            logoImg.style.display = 'block';
-            logoPlaceholder.style.display = 'none';
-        }
+        const getText = (id) => document.getElementById(id)?.innerText || '';
+        const getValue = (id) => document.getElementById(id)?.value || '';
+        return {
+            lieuChantier: getText('lieuChantier'),
+            piloteNom: getText('piloteNom'),
+            sponsorNom: getText('sponsorNom'),
+            quoiVal: getText('quoiVal'), quiVal: getText('quiVal'), ouVal: getText('ouVal'),
+            quandVal: getText('quandVal'), commentVal: getText('commentVal'), combienVal: getText('combienVal'),
+            pourquoiVal: getText('pourquoiVal'), why1: getText('why1'), why2: getText('why2'),
+            why3: getText('why3'), why4: getText('why4'), why5: getText('why5'),
+            rootCauseText: getText('rootCauseText'), smartObj: getText('smartObj'), gainsValue: getText('gainsValue'),
+            methodValue: getText('methodValue'), actionPlan: getText('actionPlan'),
+            datePilote: getText('datePilote'), dateUap: getText('dateUap'), dateQualite: getText('dateQualite'),
+            dateService: getText('dateService'), dateDirecteur: getText('dateDirecteur'),
+            mainSteps: getText('mainSteps'), kpiText: getText('kpiText'),
+            avantComment: getValue('avantComment'), apresComment: getValue('apresComment'),
+            ameliorationDe: getText('ameliorationDe'), ameliorationA: getText('ameliorationA'),
+            ameliorationDate: getText('ameliorationDate'), gainObtenu: getText('gainObtenu'),
+            teamMembers: teamMembers, selectedMethods: selectedMethods
+        };
     }
     
     async function saveChantier() {
-        if (!currentCode) {
-            currentCode = generateCode();
-            document.getElementById('currentCode').innerText = currentCode;
-        }
+        if (!currentCode) { currentCode = generateCode(); document.getElementById('currentCode').innerText = currentCode; }
         const data = collectData();
         data.code = currentCode;
-        data.createdAt = data.createdAt || new Date().toISOString();
-        
+        data.lastModified = new Date().toISOString();
         try {
             await setDoc(doc(db, "chantiers", currentCode), data);
-            showToast(`Chantier "${currentCode}" enregistré !`, 'success');
-        } catch (error) {
-            console.error(error);
-            showToast("Erreur: Vérifiez les règles Firebase (allow read/write: if true)", 'error');
-        }
+            showToast(`✅ Chantier "${currentCode}" enregistré !`);
+        } catch (e) { showToast("❌ Erreur Firebase", 'error'); }
     }
     
     async function loadChantier(code) {
         try {
-            const docRef = doc(db, "chantiers", code);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                populateData(docSnap.data());
+            const snap = await getDoc(doc(db, "chantiers", code));
+            if (snap.exists()) {
+                const data = snap.data();
+                for (const [key, value] of Object.entries(data)) {
+                    const el = document.getElementById(key);
+                    if (el && el.isContentEditable) el.innerText = value;
+                    else if (el && el.tagName === 'TEXTAREA') el.value = value;
+                }
+                if (data.teamMembers) { teamMembers = data.teamMembers; renderTeam(); }
+                if (data.selectedMethods) {
+                    selectedMethods = data.selectedMethods;
+                    document.querySelectorAll('.method-item').forEach(item => {
+                        if(selectedMethods.includes(item.dataset.method)) item.classList.add('selected');
+                        else item.classList.remove('selected');
+                    });
+                    const methodSpan = document.getElementById('methodValue');
+                    if(methodSpan) methodSpan.innerText = selectedMethods.join(', ');
+                }
                 currentCode = code;
                 document.getElementById('currentCode').innerText = currentCode;
-                showToast(`Chantier "${code}" chargé !`, 'success');
-            } else {
-                showToast(`Aucun chantier avec le code "${code}"`, 'error');
-            }
-        } catch (error) {
-            console.error(error);
-            showToast("Erreur de chargement", 'error');
-        }
+                showToast(`📂 Chantier chargé`);
+            } else showToast(`❌ Code introuvable`, 'error');
+        } catch(e) { showToast("Erreur de chargement", 'error'); }
     }
     
     function newChantier() {
         currentCode = generateCode();
         document.getElementById('currentCode').innerText = currentCode;
-        for (const id of fieldIds) {
-            const el = document.getElementById(id);
-            if (el) el.innerText = '';
-        }
-        document.getElementById('lieuChantier').innerText = 'Nouveau chantier - ' + new Date().toLocaleDateString();
-        const logoImg = document.getElementById('logoImg');
-        const logoPlaceholder = document.getElementById('logoPlaceholder');
-        logoImg.src = '';
-        logoImg.style.display = 'none';
-        logoPlaceholder.style.display = 'flex';
-        showToast(`Nouveau chantier créé ! Code: ${currentCode}`, 'success');
+        teamMembers = [{ name: "Jean Dupont", role: "Pilote", photo: null }];
+        renderTeam();
+        selectedMethods = [];
+        document.querySelectorAll('.method-item').forEach(item => item.classList.remove('selected'));
+        const methodSpan = document.getElementById('methodValue');
+        if(methodSpan) methodSpan.innerText = '';
+        showToast(`✨ Nouveau chantier créé ! Code: ${currentCode}`);
     }
     
-    document.getElementById('newChantierBtn').addEventListener('click', newChantier);
-    document.getElementById('saveChantierBtn').addEventListener('click', saveChantier);
-    document.getElementById('loadCodeBtn').addEventListener('click', () => {
-        const code = document.getElementById('loadCodeInput').value.trim().toUpperCase();
-        if (code) loadChantier(code);
-        else showToast("Entrez un code", 'error');
-    });
-    document.getElementById('copyCodeBtn').addEventListener('click', () => {
-        if (currentCode) { navigator.clipboard.writeText(currentCode); showToast("Code copié !", 'success'); }
-        else showToast("Aucun code", 'error');
-    });
-    document.getElementById('exportPdfBtn').addEventListener('click', () => {
-        showToast("Utilisez Ctrl+P (ou Cmd+P) pour exporter en PDF", 'info');
-    });
+    function exportToPDF() {
+        showToast("📄 Génération du PDF...");
+        const element = document.getElementById('worksheetContainer');
+        html2pdf().set({ margin: 0.5, filename: `panneau_${currentCode}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(element).save();
+    }
     
-    document.getElementById('logoUploader').addEventListener('click', () => {
+    document.getElementById('newChantierBtn')?.addEventListener('click', newChantier);
+    document.getElementById('saveChantierBtn')?.addEventListener('click', saveChantier);
+    document.getElementById('loadCodeBtn')?.addEventListener('click', () => { const code = document.getElementById('loadCodeInput')?.value.trim().toUpperCase(); if(code) loadChantier(code); else showToast("Entrez un code", 'error'); });
+    document.getElementById('copyCodeBtn')?.addEventListener('click', () => { if(currentCode) { navigator.clipboard.writeText(currentCode); showToast("Code copié"); } });
+    document.getElementById('exportPdfBtn')?.addEventListener('click', exportToPDF);
+    
+    document.getElementById('logoUploader')?.addEventListener('click', () => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
         input.onchange = (e) => {
             const file = e.target.files[0];
-            if (file) {
+            if(file) {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     document.getElementById('logoImg').src = ev.target.result;
@@ -386,6 +735,7 @@
         input.click();
     });
     
+    renderTeam();
     newChantier();
 </script>
 </body>
