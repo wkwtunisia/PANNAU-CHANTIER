@@ -2,13 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panneau de Chantier - Workshop Management Board</title>
-    <!-- html2pdf pour l'export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- pdf.js pour l'import réel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,7 +39,6 @@
             align-items: center;
             gap: 8px;
         }
-        .btn i { font-size: 1rem; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
         .btn-secondary { background: linear-gradient(135deg, #475569, #334155); }
         .btn-success { background: linear-gradient(135deg, #0f766e, #0d5c56); }
@@ -147,8 +143,27 @@
         [contenteditable="true"]:focus { background-color: #fff8e0; outline: none; box-shadow: 0 0 0 2px #facc15; }
         footer { margin-top: 32px; text-align: center; font-size: 0.75rem; color: #64748b; padding-top: 24px; border-top: 1px solid #eef2ff; }
         @media (max-width: 780px) { .worksheet { padding: 20px; } .grid-2col { grid-template-columns: 1fr; } }
-        .toast { position: fixed; bottom: 30px; right: 30px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 40px; z-index: 1000; animation: fadeInOut 3s ease; }
-        @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(20px); } 10% { opacity: 1; transform: translateY(0); } 90% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            z-index: 1000;
+            font-size: 0.9rem;
+            animation: fadeInOut 3s ease forwards;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .toast.error { background: #dc2626; }
+        .toast.success { background: #10b981; }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
     </style>
 </head>
 <body>
@@ -230,50 +245,15 @@
 </div>
 
 <script>
-    // Configuration pdf.js
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-
-    // Map des IDs de champs pour l'import
-    const fieldMapping = {
-        lieuChantier: ['chantier', 'lieu', 'site', 'workshop', 'location', 'uap'],
-        piloteNom: ['pilote', 'leader', 'pilot'],
-        sponsorNom: ['sponsor'],
-        quoiVal: ['quoi', 'what', 'problème', 'problem'],
-        quiVal: ['qui', 'who'],
-        ouVal: ['où', 'where'],
-        quandVal: ['quand', 'when'],
-        commentVal: ['comment', 'how'],
-        combienVal: ['combien', 'how many'],
-        pourquoiVal: ['pourquoi', 'why'],
-        why1: ['pourquoi 1', 'why 1', '1er pourquoi'],
-        why2: ['pourquoi 2', 'why 2', '2ème pourquoi'],
-        why3: ['pourquoi 3', 'why 3', '3ème pourquoi'],
-        why4: ['pourquoi 4', 'why 4', '4ème pourquoi'],
-        why5: ['pourquoi 5', 'why 5', '5ème pourquoi'],
-        rootCauseText: ['cause racine', 'root cause'],
-        smartObj: ['objectif smart', 'smart objective', 'objectif'],
-        gainsValue: ['gains', 'savings', '€'],
-        teamMembers: ['membres', 'members', 'équipe'],
-        teamRoles: ['rôles', 'roles'],
-        methodValue: ['méthodologie', 'methodology'],
-        actionPlan: ['plan action', 'action plan'],
-        nomPiloteVal: ['nom pilote', 'pilot name'],
-        nomUapVal: ['nom uap', 'uap name'],
-        nomQualiteVal: ['nom qualité', 'quality name'],
-        nomServiceVal: ['nom service', 'service name'],
-        nomDirecteurVal: ['nom directeur', 'director name']
-    };
-
-    function showToast(message, isError = false) {
+    function showToast(message, type = 'info') {
         const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.style.background = isError ? '#dc2626' : '#1e293b';
-        toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
+        toast.className = `toast ${type === 'error' ? 'error' : (type === 'success' ? 'success' : '')}`;
+        toast.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : (type === 'success' ? 'fa-check-circle' : 'fa-info-circle')}"></i> ${message}`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // Import PDF réel avec extraction de texte
+    // Import PDF avec extraction manuelle (sans pdf.js pour éviter les problèmes de tracking)
     document.getElementById('importPdfBtn').addEventListener('click', () => {
         const input = document.createElement('input');
         input.type = 'file';
@@ -281,54 +261,81 @@
         input.onchange = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            showToast('📄 Import du PDF en cours...');
+            showToast('📄 Lecture du PDF en cours...');
             try {
                 const arrayBuffer = await file.arrayBuffer();
-                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                let fullText = '';
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(' ');
-                    fullText += pageText + '\n';
-                }
-                
-                // Remplir les champs avec correspondance approximative
-                const lowerText = fullText.toLowerCase();
-                for (const [fieldId, keywords] of Object.entries(fieldMapping)) {
-                    const element = document.getElementById(fieldId);
-                    if (element && element.isContentEditable) {
-                        for (const keyword of keywords) {
-                            const regex = new RegExp(`${keyword}[\\s:;.-]*([^\\n\\r]{5,100})`, 'i');
-                            const match = lowerText.match(regex);
-                            if (match && match[1]) {
-                                let value = match[1].trim();
-                                value = value.replace(/^[\s:-]+/, '').substring(0, 100);
-                                if (value && value.length > 2) {
-                                    element.innerText = value;
-                                    break;
+                // Extraction simple : on utilise une approche basée sur le texte via une librairie légère
+                // On charge pdf.js dynamiquement uniquement pour l'import
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.16.105/build/pdf.min.js';
+                script.onload = async () => {
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.16.105/build/pdf.worker.min.js';
+                    const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    let fullText = '';
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        fullText += textContent.items.map(item => item.str).join(' ') + '\n';
+                    }
+                    
+                    // Remplir les champs avec correspondance
+                    const lowerText = fullText.toLowerCase();
+                    
+                    // Mapping simple des champs
+                    const fieldKeywords = {
+                        lieuChantier: ['chantier', 'lieu', 'site', 'uap', 'workshop'],
+                        piloteNom: ['pilote', 'leader', 'pilot'],
+                        sponsorNom: ['sponsor'],
+                        quoiVal: ['quoi', 'what', 'problème', 'problem'],
+                        quiVal: ['qui', 'who'],
+                        ouVal: ['où', 'where', 'ou'],
+                        quandVal: ['quand', 'when', 'date'],
+                        commentVal: ['comment', 'how'],
+                        combienVal: ['combien', 'how many', 'taux'],
+                        pourquoiVal: ['pourquoi', 'why', 'raison'],
+                        rootCauseText: ['cause racine', 'root cause'],
+                        smartObj: ['objectif', 'smart', 'objective'],
+                        gainsValue: ['gains', 'prévus', 'euros', '€'],
+                        teamMembers: ['membres', 'members', 'équipe'],
+                        methodValue: ['méthodologie', 'methodology', 'qqoqccp'],
+                        actionPlan: ['plan action', 'action plan']
+                    };
+                    
+                    for (const [fieldId, keywords] of Object.entries(fieldKeywords)) {
+                        const element = document.getElementById(fieldId);
+                        if (element && element.isContentEditable) {
+                            for (const kw of keywords) {
+                                const regex = new RegExp(`${kw}[\\s:;.-]*([^\\n\\r]{5,80})`, 'i');
+                                const match = lowerText.match(regex);
+                                if (match && match[1] && match[1].length > 2) {
+                                    let val = match[1].trim().replace(/^[\s:-]+/, '');
+                                    if (val.length > 3) {
+                                        element.innerText = val.substring(0, 100);
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                
-                // Cas particulier pour les 5 pourquoi (recherche séquentielle)
-                const whyPattern = /pourquoi\s*(\d+)[^\n]{0,20}:\s*([^\n]{10,100})/gi;
-                let match;
-                const whyMatches = {};
-                while ((match = whyPattern.exec(fullText)) !== null) {
-                    whyMatches[parseInt(match[1])] = match[2].trim();
-                }
-                for (let i = 1; i <= 5; i++) {
-                    const whyField = document.getElementById(`why${i}`);
-                    if (whyField && whyMatches[i]) whyField.innerText = whyMatches[i];
-                }
-                
-                showToast('✅ PDF importé avec succès ! Les champs ont été mis à jour.');
+                    
+                    // 5 Pourquoi
+                    for (let i = 1; i <= 5; i++) {
+                        const whyField = document.getElementById(`why${i}`);
+                        if (whyField) {
+                            const regex = new RegExp(`pourquoi\\s*${i}[^:]*:?\\s*([^\\n\\r]{10,100})`, 'i');
+                            const match = fullText.match(regex);
+                            if (match && match[1]) whyField.innerText = match[1].trim();
+                        }
+                    }
+                    
+                    showToast('✅ PDF importé avec succès !', 'success');
+                    document.body.removeChild(script);
+                };
+                script.onerror = () => showToast('❌ Erreur de chargement du lecteur PDF', 'error');
+                document.body.appendChild(script);
             } catch (error) {
                 console.error(error);
-                showToast('❌ Erreur lors de l\'import du PDF', true);
+                showToast('❌ Erreur lors de l\'import', 'error');
             }
         };
         input.click();
@@ -339,13 +346,13 @@
         const element = document.getElementById('worksheetContainer');
         const opt = {
             margin: [0.5, 0.5, 0.5, 0.5],
-            filename: `panneau_chantier_${new Date().toISOString().slice(0,19)}.pdf`,
+            filename: `panneau_chantier_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, letterRendering: true },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().set(opt).from(element).save();
-        showToast('📑 Export PDF en cours...');
+        showToast('📑 Génération du PDF en cours...', 'success');
     });
 
     // Logo upload
@@ -378,7 +385,7 @@
         de: { mainTitle:"📋 WERKSTATTTafel", subtitle:"Kontinuierliche Verbesserung · Lean Management", lieuLabel:"🏷️ Werkstatt (UAP/Anlage/Service)", piloteLabel:"👤 Leiter", sponsorLabel:"🏢 Sponsor", defineTitle:"PROBLEM DEFINIERT", quoiLabel:"Was?", quiLabel:"Wer erkannte?", ouLabel:"Wo?", quandLabel:"Wann?", commentLabel:"Wie?", combienLabel:"Anzahl?", pourquoiPbLabel:"Warum Problem?", analyseTitle:"URSACHENANALYSE (5 WARUM)", rootCauseLabel:"🎯 Kernursache:", objectifTitle:"🎯 SMART-Ziel", gainsLabel:"📈 Erwartete Einsparungen:", teamTitle:"👥 Team", membersLabel:"Mitglieder:", rolesLabel:"Rollen:", methodTitle:"🛠️ Methode & Aktionen", methodLabel:"Methodik:", actionLabel:"Aktionsplan:", openingTitle:"📌 ERÖFFNUNG", thValidation:"Validierung", thDate:"Datum", thSteps:"Hauptschritte", thKPI:"Kennzahlen", valPiloteLabel:"Validierung Leiter", valUapLabel:"Validierung UAP", valQualiteLabel:"Validierung Qualität", valServiceLabel:"Validierung Service", valDirecteurLabel:"Validierung Direktor", clotureTitle:"🏁 ABSCHLUSS", avantTitle:"📉 VORHER", apresTitle:"📈 NACHHER", valPiloteCloture:"Validierung Leiter", valUapCloture:"Validierung UAP", valQualiteCloture:"Validierung Qualität", valServiceCloture:"Validierung Service", valDirecteurCloture:"Validierung Direktor", nomPiloteLabel:"Name:", nomUapLabel:"Name:", nomQualiteLabel:"Name:", nomServiceLabel:"Name:", nomDirecteurLabel:"Name:", annexesLabel:"📎 Anhänge:", footerText:"🧰 Workshop-Vorlage · Lean · PDF-Import/Export" }
     };
     let currentLang = 'fr';
-    function applyLanguage(lang) { const t = translations[lang]; Object.keys(t).forEach(id => { const el = document.getElementById(id); if (el && !el.isContentEditable && el.tagName !== 'DIV') el.innerText = t[id]; }); }
+    function applyLanguage(lang) { const t = translations[lang]; Object.keys(t).forEach(id => { const el = document.getElementById(id); if (el && !el.isContentEditable && el.tagName !== 'DIV' && el.tagName !== 'P') el.innerText = t[id]; }); }
     document.querySelectorAll('.lang-btn').forEach(btn => { btn.addEventListener('click', () => { currentLang = btn.getAttribute('data-lang'); applyLanguage(currentLang); document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }); });
     applyLanguage('fr');
     document.querySelector('.lang-btn[data-lang="fr"]').classList.add('active');
