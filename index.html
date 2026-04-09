@@ -250,7 +250,7 @@
             margin: 15px 0;
             background: #f8fafc;
         }
-        .image-preview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 16px; }
+        .image-preview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 16px; display: none; }
         .comment-input {
             width: 100%;
             padding: 10px;
@@ -384,32 +384,32 @@
         </div>
 
         <div class="info-panel">
-            <div class="info-item"><label><i class="fas fa-map-marker-alt"></i> Chantier / Ligne</label><div contenteditable="true" id="lieuChantier">Atelier Excellence - Ligne Assemblage A</div></div>
-            <div class="info-item"><label><i class="fas fa-user-check"></i> Pilote</label><div contenteditable="true" id="piloteNom">Jean Dupont</div></div>
-            <div class="info-item"><label><i class="fas fa-chart-line"></i> Sponsor</label><div contenteditable="true" id="sponsorNom">Marie Lambert</div></div>
+            <div class="info-item"><label><i class="fas fa-map-marker-alt"></i> Chantier / Ligne</label><div contenteditable="true" id="lieuChantier"></div></div>
+            <div class="info-item"><label><i class="fas fa-user-check"></i> Pilote</label><div contenteditable="true" id="piloteNom"></div></div>
+            <div class="info-item"><label><i class="fas fa-chart-line"></i> Sponsor</label><div contenteditable="true" id="sponsorNom"></div></div>
         </div>
 
         <div class="grid-2col">
             <div class="card"><div class="card-header"><h3><i class="fas fa-question-circle"></i> DÉFINIR LE PROBLÈME</h3></div><div class="card-body">
-                <div class="info-line"><span class="info-label">Quoi ?</span><span class="info-value" contenteditable="true" id="quoiVal">Défaut récurrent sur finition produit</span></div>
-                <div class="info-line"><span class="info-label">Qui ?</span><span class="info-value" contenteditable="true" id="quiVal">Opérateurs / Contrôle qualité</span></div>
-                <div class="info-line"><span class="info-label">Où ?</span><span class="info-value" contenteditable="true" id="ouVal">Ligne Assemblage final</span></div>
-                <div class="info-line"><span class="info-label">Quand ?</span><span class="info-value" contenteditable="true" id="quandVal">Depuis 15/03/2025</span></div>
-                <div class="info-line"><span class="info-label">Comment ?</span><span class="info-value" contenteditable="true" id="commentVal">Contrôle visuel / audit</span></div>
-                <div class="info-line"><span class="info-label">Combien ?</span><span class="info-value" contenteditable="true" id="combienVal">12% pièces défectueuses</span></div>
-                <div class="info-line"><span class="info-label">Pourquoi ?</span><span class="info-value" contenteditable="true" id="pourquoiVal">Impact satisfaction client & coûts rebut</span></div>
+                <div class="info-line"><span class="info-label">Quoi ?</span><span class="info-value" contenteditable="true" id="quoiVal"></span></div>
+                <div class="info-line"><span class="info-label">Qui ?</span><span class="info-value" contenteditable="true" id="quiVal"></span></div>
+                <div class="info-line"><span class="info-label">Où ?</span><span class="info-value" contenteditable="true" id="ouVal"></span></div>
+                <div class="info-line"><span class="info-label">Quand ?</span><span class="info-value" contenteditable="true" id="quandVal"></span></div>
+                <div class="info-line"><span class="info-label">Comment ?</span><span class="info-value" contenteditable="true" id="commentVal"></span></div>
+                <div class="info-line"><span class="info-label">Combien ?</span><span class="info-value" contenteditable="true" id="combienVal"></span></div>
+                <div class="info-line"><span class="info-label">Pourquoi ?</span><span class="info-value" contenteditable="true" id="pourquoiVal"></span></div>
             </div></div>
             <div class="card"><div class="card-header"><h3><i class="fas fa-brain"></i> 5 POURQUOI (Analyse)</h3></div><div class="card-body">
-                <div class="step-why"><span class="step-num">1</span><span class="step-text" contenteditable="true" id="why1">Réglage machine instable</span></div>
-                <div class="step-why"><span class="step-num">2</span><span class="step-text" contenteditable="true" id="why2">Absence de procédure standard</span></div>
-                <div class="step-why"><span class="step-num">3</span><span class="step-text" contenteditable="true" id="why3">Formation opérateur incomplète</span></div>
-                <div class="step-why"><span class="step-num">4</span><span class="step-text" contenteditable="true" id="why4">Documentation non mise à jour</span></div>
-                <div class="step-why"><span class="step-num">5</span><span class="step-text" contenteditable="true" id="why5">Absence d'audit régulier</span></div>
-                <div style="margin-top: 20px; background:#fef3c7; padding: 14px; border-radius: 20px;"><span style="font-weight:800;">🎯 Cause Racine :</span> <span contenteditable="true" id="rootCauseText">Manque de standardisation et formation continue</span></div>
+                <div class="step-why"><span class="step-num">1</span><span class="step-text" contenteditable="true" id="why1"></span></div>
+                <div class="step-why"><span class="step-num">2</span><span class="step-text" contenteditable="true" id="why2"></span></div>
+                <div class="step-why"><span class="step-num">3</span><span class="step-text" contenteditable="true" id="why3"></span></div>
+                <div class="step-why"><span class="step-num">4</span><span class="step-text" contenteditable="true" id="why4"></span></div>
+                <div class="step-why"><span class="step-num">5</span><span class="step-text" contenteditable="true" id="why5"></span></div>
+                <div style="margin-top: 20px; background:#fef3c7; padding: 14px; border-radius: 20px;"><span style="font-weight:800;">🎯 Cause Racine :</span> <span contenteditable="true" id="rootCauseText"></span></div>
             </div></div>
         </div>
 
-        <div class="objectif-box"><div style="font-weight:800; font-size:1.2rem;"><i class="fas fa-bullseye"></i> Objectif SMART</div><div contenteditable="true" id="smartObj" style="margin: 12px 0;">Réduire le taux de défaut de 12% → 3% d'ici Juin 2025</div><div><span style="font-weight:700;">💰 Gains prévus :</span> <span contenteditable="true" id="gainsValue">32 500</span> €</div></div>
+        <div class="objectif-box"><div style="font-weight:800; font-size:1.2rem;"><i class="fas fa-bullseye"></i> Objectif SMART</div><div contenteditable="true" id="smartObj" style="margin: 12px 0;"></div><div><span style="font-weight:700;">💰 Gains prévus :</span> <span contenteditable="true" id="gainsValue"></span> €</div></div>
 
         <div style="display: flex; gap: 28px; margin: 28px 0; flex-wrap: wrap;">
             <div style="flex:1; background:#f8fafc; border-radius: 28px; padding: 20px;">
@@ -431,17 +431,17 @@
                     <span class="info-label">Autre méthode :</span>
                     <input type="text" id="otherMethod" placeholder="Entrez une autre méthode..." style="flex:1; padding: 8px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">
                 </div>
-                <div class="info-line"><span class="info-label">Plan d'action :</span><span class="info-value" contenteditable="true" id="actionPlan">Former, standardiser, audit quotidien</span></div>
+                <div class="info-line"><span class="info-label">Plan d'action :</span><span class="info-value" contenteditable="true" id="actionPlan"></span></div>
             </div>
         </div>
 
         <div style="margin: 24px 0 16px;"><div style="background:#0f3b5c; color:white; padding: 8px 24px; border-radius: 60px; display: inline-block;"><i class="fas fa-play"></i> OUVERTURE DU CHANTIER</div></div>
         <table class="table-works"><thead><tr><th>Validation</th><th>Date</th><th>Étapes principales</th><th>KPI / Suivi</th></tr></thead><tbody>
-            <tr><td style="font-weight:600;">Pilote</td><td contenteditable="true" id="datePilote">10/03/2025</td><td rowspan="5" contenteditable="true" id="mainSteps">Analyse causes, plan d'actions, déploiement 5S</td><td rowspan="5" contenteditable="true" id="kpiText">Taux défaut, TRS</td></tr>
-            <tr><td style="font-weight:600;">Resp UAP</td><td contenteditable="true" id="dateUap">12/03/2025</td></tr>
-            <tr><td style="font-weight:600;">Resp Qualité</td><td contenteditable="true" id="dateQualite">14/03/2025</td></tr>
-            <tr><td style="font-weight:600;">Resp Service</td><td contenteditable="true" id="dateService">15/03/2025</td></tr>
-            <tr><td style="font-weight:600;">Directeur Site</td><td contenteditable="true" id="dateDirecteur">20/03/2025</td></tr>
+            <tr><td style="font-weight:600;">Pilote</td><td contenteditable="true" id="datePilote"></td><td rowspan="5" contenteditable="true" id="mainSteps"></td><td rowspan="5" contenteditable="true" id="kpiText"></td></tr>
+            <tr><td style="font-weight:600;">Resp UAP</td><td contenteditable="true" id="dateUap"></td></tr>
+            <tr><td style="font-weight:600;">Resp Qualité</td><td contenteditable="true" id="dateQualite"></td></tr>
+            <tr><td style="font-weight:600;">Resp Service</td><td contenteditable="true" id="dateService"></td></tr>
+            <tr><td style="font-weight:600;">Directeur Site</td><td contenteditable="true" id="dateDirecteur"></td></tr>
         </tbody></table>
 
         <hr style="margin: 32px 0 24px;">
@@ -466,24 +466,24 @@
 
         <div class="result-box">
             <h4><i class="fas fa-trophy"></i> RÉSULTATS ATTEINTS</h4>
-            <div class="info-line"><span class="info-label">Amélioration de :</span><span contenteditable="true" id="ameliorationDe">12% défauts</span></div>
-            <div class="info-line"><span class="info-label">à :</span><span contenteditable="true" id="ameliorationA">3% défauts</span></div>
-            <div class="info-line"><span class="info-label">en (date) :</span><span contenteditable="true" id="ameliorationDate">Juin 2025</span></div>
-            <div class="info-line"><span class="info-label">💰 Gain obtenu :</span><span contenteditable="true" id="gainObtenu">28 500</span> €</div>
+            <div class="info-line"><span class="info-label">Amélioration de :</span><span contenteditable="true" id="ameliorationDe"></span></div>
+            <div class="info-line"><span class="info-label">à :</span><span contenteditable="true" id="ameliorationA"></span></div>
+            <div class="info-line"><span class="info-label">en (date) :</span><span contenteditable="true" id="ameliorationDate"></span></div>
+            <div class="info-line"><span class="info-label">💰 Gain obtenu :</span><span contenteditable="true" id="gainObtenu"></span> €</div>
             <div style="margin-top: 15px; padding: 10px; background: #fef3c7; border-radius: 16px; font-size:0.8rem;">
                 <i class="fas fa-calculator"></i> (doit être validé par la finance)
             </div>
         </div>
 
         <div class="validation-grid">
-            <div class="validation-card"><strong><i class="fas fa-user-tie"></i> Validation Pilote</strong><br>Nom: <span contenteditable="true" id="nomPiloteVal">Jean Dupont</span><div class="sign-line">Signature: <span contenteditable="true" id="signPilote">J.D.</span><span contenteditable="true" id="datePiloteCloture">05/06/2025</span></div></div>
-            <div class="validation-card"><strong><i class="fas fa-industry"></i> Validation Resp UAP</strong><br>Nom: <span contenteditable="true" id="nomUapVal">Sophie Martin</span><div class="sign-line">Signature: <span contenteditable="true" id="signUap">S.M.</span><span contenteditable="true" id="dateUapCloture">05/06/2025</span></div></div>
-            <div class="validation-card"><strong><i class="fas fa-check-double"></i> Validation Resp Qualité</strong><br>Nom: <span contenteditable="true" id="nomQualiteVal">Ahmed Benali</span><div class="sign-line">Signature: <span contenteditable="true" id="signQualite">A.B.</span><span contenteditable="true" id="dateQualiteCloture">06/06/2025</span></div></div>
-            <div class="validation-card"><strong><i class="fas fa-truck-fast"></i> Validation Resp Service</strong><br>Nom: <span contenteditable="true" id="nomServiceVal">Clara Weber</span><div class="sign-line">Signature: <span contenteditable="true" id="signService">C.W.</span><span contenteditable="true" id="dateServiceCloture">07/06/2025</span></div></div>
-            <div class="validation-card"><strong><i class="fas fa-building"></i> Validation Directeur Site</strong><br>Nom: <span contenteditable="true" id="nomDirecteurVal">Marc Lefevre</span><div class="sign-line">Signature: <span contenteditable="true" id="signDirecteur">M.L.</span><span contenteditable="true" id="dateDirecteurCloture">10/06/2025</span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-user-tie"></i> Validation Pilote</strong><br>Nom: <span contenteditable="true" id="nomPiloteVal"></span><div class="sign-line">Signature: <span contenteditable="true" id="signPilote"></span><span contenteditable="true" id="datePiloteCloture"></span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-industry"></i> Validation Resp UAP</strong><br>Nom: <span contenteditable="true" id="nomUapVal"></span><div class="sign-line">Signature: <span contenteditable="true" id="signUap"></span><span contenteditable="true" id="dateUapCloture"></span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-check-double"></i> Validation Resp Qualité</strong><br>Nom: <span contenteditable="true" id="nomQualiteVal"></span><div class="sign-line">Signature: <span contenteditable="true" id="signQualite"></span><span contenteditable="true" id="dateQualiteCloture"></span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-truck-fast"></i> Validation Resp Service</strong><br>Nom: <span contenteditable="true" id="nomServiceVal"></span><div class="sign-line">Signature: <span contenteditable="true" id="signService"></span><span contenteditable="true" id="dateServiceCloture"></span></div></div>
+            <div class="validation-card"><strong><i class="fas fa-building"></i> Validation Directeur Site</strong><br>Nom: <span contenteditable="true" id="nomDirecteurVal"></span><div class="sign-line">Signature: <span contenteditable="true" id="signDirecteur"></span><span contenteditable="true" id="dateDirecteurCloture"></span></div></div>
         </div>
 
-        <div style="background:#f1f5f9; border-radius: 28px; padding: 18px 24px;"><span style="font-weight:800;"><i class="fas fa-paperclip"></i> Annexes & Standards :</span> <span contenteditable="true" id="annexesText">Procédure modifiée V2, plan formation 2025</span></div>
+        <div style="background:#f1f5f9; border-radius: 28px; padding: 18px 24px;"><span style="font-weight:800;"><i class="fas fa-paperclip"></i> Annexes & Standards :</span> <span contenteditable="true" id="annexesText"></span></div>
         <footer><i class="fas fa-database"></i> Sauvegarde cloud Firebase · Code unique · Export PDF</footer>
     </div>
 </div>
@@ -505,7 +505,7 @@
     const db = getFirestore(app);
     
     let currentCode = null;
-    let teamMembers = [{ name: "Jean Dupont", role: "Pilote", photo: null }];
+    let teamMembers = [{ name: "", role: "", photo: null }];
     let selectedMethods = [];
     
     function showToast(msg, type = 'info') {
@@ -519,6 +519,65 @@
     
     function generateCode() { return 'CH-' + Math.random().toString(36).substring(2, 10).toUpperCase(); }
     
+    // Liste de tous les IDs de champs à vider
+    const allFieldIds = [
+        'lieuChantier', 'piloteNom', 'sponsorNom',
+        'quoiVal', 'quiVal', 'ouVal', 'quandVal', 'commentVal', 'combienVal', 'pourquoiVal',
+        'why1', 'why2', 'why3', 'why4', 'why5', 'rootCauseText',
+        'smartObj', 'gainsValue', 'actionPlan', 'methodValue',
+        'datePilote', 'dateUap', 'dateQualite', 'dateService', 'dateDirecteur',
+        'mainSteps', 'kpiText',
+        'ameliorationDe', 'ameliorationA', 'ameliorationDate', 'gainObtenu',
+        'nomPiloteVal', 'nomUapVal', 'nomQualiteVal', 'nomServiceVal', 'nomDirecteurVal',
+        'signPilote', 'signUap', 'signQualite', 'signService', 'signDirecteur',
+        'datePiloteCloture', 'dateUapCloture', 'dateQualiteCloture', 'dateServiceCloture', 'dateDirecteurCloture',
+        'annexesText'
+    ];
+    
+    function clearAllFields() {
+        // Vider tous les champs contenteditable
+        for (const id of allFieldIds) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = '';
+        }
+        
+        // Vider les textareas
+        const avantComment = document.getElementById('avantComment');
+        const apresComment = document.getElementById('apresComment');
+        if (avantComment) avantComment.value = '';
+        if (apresComment) apresComment.value = '';
+        
+        // Vider le champ autre méthode
+        const otherMethod = document.getElementById('otherMethod');
+        if (otherMethod) otherMethod.value = '';
+        
+        // Réinitialiser l'équipe (1 membre vide)
+        teamMembers = [{ name: "", role: "", photo: null }];
+        renderTeam();
+        
+        // Réinitialiser les méthodes sélectionnées
+        selectedMethods = [];
+        document.querySelectorAll('.method-item').forEach(item => item.classList.remove('selected'));
+        
+        // Réinitialiser les images
+        const avantImage = document.getElementById('avantImage');
+        const apresImage = document.getElementById('apresImage');
+        if (avantImage) { avantImage.src = ''; avantImage.style.display = 'none'; }
+        if (apresImage) { apresImage.src = ''; apresImage.style.display = 'none'; }
+        
+        // Réinitialiser le logo
+        const logoImg = document.getElementById('logoImg');
+        const logoPlaceholder = document.getElementById('logoPlaceholder');
+        if (logoImg) { logoImg.src = ''; logoImg.style.display = 'none'; }
+        if (logoPlaceholder) logoPlaceholder.style.display = 'flex';
+        
+        // Réinitialiser les fichiers input
+        const avantFile = document.getElementById('avantFile');
+        const apresFile = document.getElementById('apresFile');
+        if (avantFile) avantFile.value = '';
+        if (apresFile) apresFile.value = '';
+    }
+    
     function renderTeam() {
         const container = document.getElementById('teamContainer');
         if (!container) return;
@@ -531,8 +590,8 @@
                     ${member.photo ? `<img src="${member.photo}">` : '<i class="fas fa-user"></i>'}
                 </div>
                 <div class="team-info">
-                    <input type="text" placeholder="Nom" value="${member.name.replace(/"/g, '&quot;')}" class="member-name" data-idx="${idx}">
-                    <input type="text" placeholder="Rôle" value="${member.role.replace(/"/g, '&quot;')}" class="member-role" data-idx="${idx}">
+                    <input type="text" placeholder="Nom" value="${(member.name || '').replace(/"/g, '&quot;')}" class="member-name" data-idx="${idx}">
+                    <input type="text" placeholder="Rôle" value="${(member.role || '').replace(/"/g, '&quot;')}" class="member-role" data-idx="${idx}">
                 </div>
                 <div class="remove-member" data-idx="${idx}"><i class="fas fa-trash"></i></div>
             `;
@@ -577,7 +636,7 @@
     }
     
     document.getElementById('addMemberBtn')?.addEventListener('click', () => {
-        teamMembers.push({ name: "Nouveau membre", role: "À définir", photo: null });
+        teamMembers.push({ name: "", role: "", photo: null });
         renderTeam();
     });
     
@@ -598,7 +657,7 @@
     });
     
     // Upload images
-    function setupImageUpload(triggerId, fileId, imgId, commentId) {
+    function setupImageUpload(triggerId, fileId, imgId) {
         const trigger = document.getElementById(triggerId);
         const fileInput = document.getElementById(fileId);
         if(trigger && fileInput) {
@@ -620,8 +679,8 @@
         }
     }
     
-    setupImageUpload('avantUpload', 'avantFile', 'avantImage', 'avantComment');
-    setupImageUpload('apresUpload', 'apresFile', 'apresImage', 'apresComment');
+    setupImageUpload('avantUpload', 'avantFile', 'avantImage');
+    setupImageUpload('apresUpload', 'apresFile', 'apresImage');
     
     document.getElementById('otherMethod')?.addEventListener('change', (e) => {
         if(e.target.value) {
@@ -695,19 +754,14 @@
     function newChantier() {
         currentCode = generateCode();
         document.getElementById('currentCode').innerText = currentCode;
-        teamMembers = [{ name: "Jean Dupont", role: "Pilote", photo: null }];
-        renderTeam();
-        selectedMethods = [];
-        document.querySelectorAll('.method-item').forEach(item => item.classList.remove('selected'));
-        const methodSpan = document.getElementById('methodValue');
-        if(methodSpan) methodSpan.innerText = '';
-        showToast(`✨ Nouveau chantier créé ! Code: ${currentCode}`);
+        clearAllFields();
+        showToast(`✨ Nouveau chantier créé ! Code: ${currentCode} - Tous les champs sont vides`);
     }
     
     function exportToPDF() {
         showToast("📄 Génération du PDF...");
         const element = document.getElementById('worksheetContainer');
-        html2pdf().set({ margin: 0.5, filename: `panneau_${currentCode}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(element).save();
+        html2pdf().set({ margin: 0.5, filename: `panneau_${currentCode || 'nouveau'}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(element).save();
     }
     
     document.getElementById('newChantierBtn')?.addEventListener('click', newChantier);
